@@ -133,21 +133,26 @@ const EventDetails = ({item}) => {
 
 const ListViewMatchesComponent = () => {
   const [events, setEventsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Function to fetch data from the API
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get('https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/baseball/all/all?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true');
+      setEventsData(response.data.events?.filter(item => item.event.group === 'MLB').map(item => ({...item, score: item.liveData?.score})) || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Function to fetch data from the API
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/baseball/all/all?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true');
-        setEventsData(response.data.events?.filter(item => item.event.group === 'MLB').map(item => ({...item, score: item.liveData?.score})) || []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    // Initial data fetch
-    fetchData();
-  }, []);
+    fetchData(); // Initial fetch
+    const intervalId = setInterval(fetchData, 1000 * 15); // Fetch data every 15 seconds  
+    return () => clearInterval(intervalId); // Clean up the interval on component unmount
+  }, []);  
 
   useEffect(() => {
     // Setup socket connection for live updates
