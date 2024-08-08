@@ -1,16 +1,73 @@
 .listviewmatches-container {
-  font-family: Arial, sans-serif;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-  .h1 {
-    color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+
+  color: #030515;
+  .color-black {
+    color: #030515;
   }
-  
-  .pre {
-    background-color: #eaeaea;
-    padding: 10px;
-    border-radius: 4px;
+  .color-orange {
+    color: #FB4F14;
+  }
+  .events-list {
+    .event-details {
+      margin: 1em 0;
+      border-radius: 15px;
+      overflow: hidden;
+      background: #F7F8F9;
+      .event-content {
+        padding: 8px;
+        .event-teams {
+          .event-team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            margin-bottom: 2px;
+            &:last-child {
+              margin-bottom: 0;
+            }
+            .event-team-name {
+              width: 40%;
+              font-size: 13px;
+            }
+            .event-betinfo-cells {
+              display: flex;
+              font-size: 11px;
+              .event-betinfo-cell {
+                flex: 1;
+                background: #E7EAEE;
+                padding: 0.5em 1em;
+                margin-left: 2px;
+                border-radius: 8px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            }
+          }
+        }
+      }
+      .event-footer {
+        padding: 8px 15px;
+        display: flex;
+        justify-content: space-between;
+        background: #E7EAEE;
+        .mark-spr {
+          color: #FB4F14;
+          border: solid 1px #FB4F14;
+          border-radius: 15px;
+          font-size: 9px;
+          font-weight: 700;
+          padding: 1px 5px;
+          margin-right: 0.5em;
+        }
+        a {
+          text-decoration: none;
+          font-weight: 600;
+        }
+      }
+    }
   }
 }
