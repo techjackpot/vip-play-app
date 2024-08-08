@@ -13,15 +13,15 @@ const TeamDetails = ({teamData}) => {
         <span>{teamData.name}</span>
       </div>
       <div className="event-betinfo-cells">
-        <div className={`event-betinfo-cell ${teamData.spread?.suspended ? 'suspended' : ''}`}>
+        <div className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''}`}>
           <span>{teamData.spread?.text1}</span>
           <span>{teamData.spread?.text2}</span>
         </div>
-        <div className={`event-betinfo-cell ${teamData.total?.suspended ? 'suspended' : ''}`}>
+        <div className={`event-betinfo-cell ${teamData.totalData?.suspended ? 'suspended' : ''}`}>
           <span>{teamData.total?.text1}</span>
           <span>{teamData.total?.text2}</span>
         </div>
-        <div className={`event-betinfo-cell ${teamData.moneyline?.suspended ? 'suspended' : ''}`}>
+        <div className={`event-betinfo-cell ${teamData.moneylineData?.suspended ? 'suspended' : ''}`}>
           <span>{teamData.moneyline?.text}</span>
         </div>
       </div>
@@ -78,10 +78,16 @@ const EventDetails = ({item}) => {
     const homeData = {
       name: isAway ? item.event.awayName : item.event.homeName,
       event: item.event,
+      spreadData,
+      totalData,
+      moneylineData,
     };
     const awayData = {
       name: isAway ? item.event.homeName : item.event.awayName,
       event: item.event,
+      spreadData,
+      totalData,
+      moneylineData,
     };
 
     fillSpreadData(spreadData?.outcomes?.find(outcome => outcome.participant === homeData.name), homeData);
