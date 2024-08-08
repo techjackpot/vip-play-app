@@ -13,16 +13,16 @@ const TeamDetails = ({teamData}) => {
         <span>{teamData.name}</span>
       </div>
       <div className="event-betinfo-cells">
-        <div className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''}`}>
-          <span>{teamData.spread?.text1}</span>
-          <span>{teamData.spread?.text2}</span>
+        <div className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''} ${!teamData.spread && 'empty'}`}>
+          <span className="text1">{teamData.spread?.text1}</span>
+          <span className="text2">{teamData.spread?.text2}</span>
         </div>
-        <div className={`event-betinfo-cell ${teamData.totalData?.suspended ? 'suspended' : ''}`}>
-          <span>{teamData.total?.text1}</span>
-          <span>{teamData.total?.text2}</span>
+        <div className={`event-betinfo-cell ${teamData.totalData?.suspended ? 'suspended' : ''} ${!teamData.total && 'empty'}`}>
+          <span className="text1">{teamData.total?.text1}</span>
+          <span className="text2">{teamData.total?.text2}</span>
         </div>
-        <div className={`event-betinfo-cell ${teamData.moneylineData?.suspended ? 'suspended' : ''}`}>
-          <span>{teamData.moneyline?.text}</span>
+        <div className={`event-betinfo-cell ${teamData.moneylineData?.suspended ? 'suspended' : ''} ${!teamData.moneyline && 'empty'}`}>
+          <span className="text">{teamData.moneyline?.text}</span>
         </div>
       </div>
     </div>
@@ -295,7 +295,7 @@ const ListViewMatchesComponent = () => {
   return (
     <div className="listviewmatches-container">
       <div className="events-list-header">
-        <h1>Today</h1>
+        <h1>Baseball/MLB</h1>
         <div className="event-betinfo-cols">
           <div className="event-betinfo-col">Spread</div>
           <div className="event-betinfo-col">Total</div>

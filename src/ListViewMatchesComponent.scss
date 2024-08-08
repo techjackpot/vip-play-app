@@ -67,15 +67,30 @@
               display: flex;
               font-size: 11px;
               .event-betinfo-cell {
+                min-height: 37px;
+                box-sizing: border-box;
                 flex: 1;
                 background: #E7EAEE;
-                padding: 0.5em 1em;
+                padding: 0.5em 0;
                 margin-left: 2px;
                 border-radius: 8px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+                .text2, .text {
+                  color: #FB4F14;
+                }
+                &.suspended {
+                  color: #ABABAB;
+                  background: #DCDCDC;
+                  .text2, .text {
+                    display: none;
+                  }
+                }
+                &.empty {
+                  background: transparent;
+                }
               }
             }
           }
