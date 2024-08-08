@@ -3,15 +3,137 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import './ListViewMatchesComponent.scss'; // Import the styles
 
+const TeamDetails = ({teamData}) => {
+  return (
+    <div className="event-team">
+      <div className="event-team-name">
+        {teamData.event.state === 'STARTED' && (
+          <span className="score">{teamData.score}</span>
+        )}
+        <span>{teamData.name}</span>
+      </div>
+      <div className="event-betinfo-cells">
+        <div className={`event-betinfo-cell ${teamData.spread?.suspended ? 'suspended' : ''}`}>
+          <span>{teamData.spread?.text1}</span>
+          <span>{teamData.spread?.text2}</span>
+        </div>
+        <div className={`event-betinfo-cell ${teamData.total?.suspended ? 'suspended' : ''}`}>
+          <span>{teamData.total?.text1}</span>
+          <span>{teamData.total?.text2}</span>
+        </div>
+        <div className={`event-betinfo-cell ${teamData.moneyline?.suspended ? 'suspended' : ''}`}>
+          <span>{teamData.moneyline?.text}</span>
+        </div>
+      </div>
+    </div>
+  )
+};
+
+const EventDetails = ({item}) => {
+  const [isAway, setIsAway] = useState(true);
+  const [homeData, setHomeData] = useState(null);
+  const [awayData, setAwayData] = useState(null);
+
+  useEffect(() => {
+    setIsAway(item.event.tags.includes('AWAY_HOME'));
+  }, [item]);
+
+  const fillSpreadData = (outcome, teamData) => {
+    teamData.spread = null;
+    if (outcome) {
+      teamData.spread = {
+        ...outcome,
+        text1: outcome.line > 0 ? '+' + outcome.line / 1000 : outcome.line / 1000,
+        text2: (outcome.odds / 1000).toFixed(2),
+      };
+    }
+  };
+
+  const fillTotalData = (outcome, teamData) => {
+    teamData.total = null;
+    if (outcome) {
+      teamData.total = {
+        ...outcome,
+        text1: outcome.label[0] + ' ' + outcome.line / 1000,
+        text2: (outcome.odds / 1000).toFixed(2),
+      };
+    }
+  };
+
+  const fillMoneylineData = (outcome, teamData) => {
+    teamData.moneyline = null;
+    if (outcome) {
+      teamData.moneyline = {
+        ...outcome,
+        text: (outcome.odds / 1000).toFixed(2),
+      };
+    }
+  }
+
+  useEffect(() => {
+    const spreadData = item.betOffers.find(betOffer => betOffer.betOfferType.name === 'Handicap');
+    const totalData = item.betOffers.find(betOffer => betOffer.betOfferType.name === 'Over/Under');
+    const moneylineData = item.betOffers.find(betOffer => betOffer.betOfferType.name === 'Match');
+
+    const homeData = {
+      name: isAway ? item.event.awayName : item.event.homeName,
+      event: item.event,
+    };
+    const awayData = {
+      name: isAway ? item.event.homeName : item.event.awayName,
+      event: item.event,
+    };
+
+    fillSpreadData(spreadData?.outcomes?.find(outcome => outcome.participant === homeData.name), homeData);
+    fillSpreadData(spreadData?.outcomes?.find(outcome => outcome.participant === awayData.name), awayData);
+
+    fillTotalData(totalData?.outcomes?.find(outcome => outcome.label === 'Over'), homeData);
+    fillTotalData(totalData?.outcomes?.find(outcome => outcome.label === 'Under'), awayData);
+
+    fillMoneylineData(moneylineData?.outcomes?.find(outcome => outcome.participant === homeData.name), homeData);
+    fillMoneylineData(moneylineData?.outcomes?.find(outcome => outcome.participant === awayData.name), awayData);
+
+    if (item.score) {
+      homeData.score = isAway ? item.score.away : item.score.home;
+      awayData.score = isAway ? item.score.home : item.score.away;
+    }
+
+    setHomeData(homeData);
+    setAwayData(awayData);
+  }, [item]);
+
+  if (!homeData || !awayData) return <></>;
+
+  return (
+    <div className="event-details">
+      <div className="event-content">
+        <div className="event-teams">
+          <TeamDetails teamData={homeData} />
+          <TeamDetails teamData={awayData} />
+        </div>
+      </div>
+      <div className="event-footer">
+        <div>
+          <span className="event-status">SPR</span>
+          {item.event.state === 'NOT_STARTED' && (
+            <span>{new Date(item.event.start).toLocaleTimeString()}</span>
+          )}
+        </div>
+        <a href="/" className="color-orange">More Wagers &gt;</a>
+      </div>
+    </div>
+  )
+};
+
 const ListViewMatchesComponent = () => {
-  const [events, setEvents] = useState([]);
+  const [events, setEventsData] = useState([]);
 
   useEffect(() => {
     // Function to fetch data from the API
     const fetchData = async () => {
       try {
         const response = await axios.get('https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/baseball/all/all?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true');
-        setEvents(response.data.events?.filter(item => item.event.group == 'MLB') || []);
+        setEventsData(response.data.events?.filter(item => item.event.group === 'MLB').map(item => ({...item, score: item.liveData?.score})) || []);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -19,7 +141,9 @@ const ListViewMatchesComponent = () => {
 
     // Initial data fetch
     fetchData();
+  }, []);
 
+  useEffect(() => {
     // Setup socket connection for live updates
     const socket = io(`wss://eu-push.kambicdn.com`, {
       transports: ['websocket'],
@@ -55,55 +179,91 @@ const ListViewMatchesComponent = () => {
           let eventIndex, betOfferIndex, outcomeIndex
           // console.log(message.mt)
           switch(message.mt) {
-            case 18: // EventRemoved
-              eventIndex = events?.findIndex(item => item.event.id === message.er.eventId)
-              if (eventIndex > -1) {
-                events.splice(eventIndex, 1)
-                console.log('EventRemoved', message.er.eventId)
+            case 4: // EventAdded
+              if (message.ea.event.group === 'MLB') {
+                setEventsData((prevEvents) => [...prevEvents, {
+                  event: message.ea.event,
+                  betOffers: [],
+                }])
+                console.log('EventAdded', message.ea.event.id)
               }
+              break;
+            case 18: // EventRemoved
+              setEventsData((prevEvents) => prevEvents.filter(item => item.event.id !== message.er.eventId))
+              console.log('EventRemoved', message.er.eventId)
+              break;
+            case 16: // EventScoreUpdated
+              setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.score.eventId ? item : {
+                ...item,
+                score: {
+                  ...item.score,
+                  ...message.score.score,
+                },
+              }))
+              console.log('EventScoreUpdated', message.score.eventId)
+              break;
+            case 6: // BetOfferAdded
+              setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.boa.eventId ? item : {
+                ...item,
+                betOffers: [
+                  ...item.betOffers,
+                  message.boa.betOffer,
+                ],
+              }))
+              console.log('BetOfferAdded', message.boa.eventId, message.boa.betOffer.id)
               break;
             case 7: // BetOfferRemoved
-              eventIndex = events?.findIndex(item => item.event.id === message.bor.eventId)
-              if (eventIndex > -1) {
-                betOfferIndex = events[eventIndex].betOffers.findIndex(betOffer => betOffer.id === message.bor.betOfferId)
-                if (betOfferIndex > -1) {
-                  events[eventIndex].betOffers.splice(betOfferIndex, 1)
-                  console.log('BetOfferRemoved', message.bor.eventId, message.bor.betOfferId)
-                }
-              }
+              setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.bor.eventId ? item : {
+                ...item,
+                betOffers: item.betOffers.filter(betOffer => betOffer.id !== message.bor.betOfferId),
+              }))
+              console.log('BetOfferRemoved', message.bor.eventId, message.bor.betOfferId)
+              break;
+            case 8: // BetOfferStatusUpdated
+              setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.bosu.eventId ? item : {
+                ...item,
+                betOffers: item.betOffers.map(betOffer => betOffer.id !== message.bosu.betOfferId ? betOffer : {
+                  ...betOffer,
+                  ...message.bosu,
+                }),
+              }))
+              console.log('BetOfferStatusUpdated', message.bosu.eventId, message.bosu.betOfferId)
+              break;
+            case 22: // BetOfferOddsAdded
+              setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.booa.eventId ? item : {
+                ...item,
+                betOffers: item.betOffers.map(betOffer => ({
+                  ...betOffer,
+                  outcomes: [
+                    ...betOffer.outcomes,
+                    ...message.booa.outcomes.filter(outcome => outcome.betOfferId === betOffer.id),
+                  ]
+                })),
+              }))
+              console.log('BetOfferOddsAdded', message.booa.eventId)
               break;
             case 11: // BetOfferOddsUpdated
-              eventIndex = events?.findIndex(item => item.event.id === message.boou.eventId)
-              if (eventIndex > -1) {
-                message.boou.outcomes.forEach(outcome => {
-                  betOfferIndex = events[eventIndex].betOffers.findIndex(betOffer => betOffer.id === outcome.betOfferId)
-                  if (betOfferIndex > -1) {
-                    outcomeIndex = events[eventIndex].betOffers[betOfferIndex].outcomes.findIndex(item => item.id === outcome.id)
-                    if (outcomeIndex > -1) {
-                      events[eventIndex].betOffers[betOfferIndex].outcomes[outcomeIndex] = {
-                        ...events[eventIndex].betOffers[betOfferIndex].outcomes[outcomeIndex],
-                        ...outcome
-                      }
-                      console.log('BetOfferOddsUpdated', message.boou.eventId, outcome.betOfferId, outcome.id)
-                    }
-                  }
-                })
-              }
+              setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.boou.eventId ? item : {
+                ...item,
+                betOffers: item.betOffers.map(betOffer => ({
+                  ...betOffer,
+                  outcomes: betOffer.outcomes.map(outcome => ({
+                    ...outcome,
+                    ...message.boou.outcomes.find(oc => oc.id === outcome.id),
+                  }))
+                })),
+              }))
+              console.log('BetOfferOddsUpdated', message.boou.eventId)
               break;
             case 23: // BetOfferOddsRemoved
-              eventIndex = events?.findIndex(item => item.event.id === message.boor.eventId)
-              if (eventIndex > -1) {
-                message.boor.outcomes.forEach(outcome => {
-                  betOfferIndex = events[eventIndex].betOffers.findIndex(betOffer => betOffer.id === outcome.betOfferId)
-                  if (betOfferIndex > -1) {
-                    outcomeIndex = events[eventIndex].betOffers[betOfferIndex].outcomes.findIndex(item => item.id === outcome.id)
-                    if (outcomeIndex > -1) {
-                      events[eventIndex].betOffers[betOfferIndex].outcomes.splice(outcomeIndex, 1)
-                      console.log('BetOfferOddsRemoved', message.boor.eventId, outcome.betOfferId, outcome.id)
-                    }
-                  }
-                })
-              }
+              setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.boor.eventId ? item : {
+                ...item,
+                betOffers: item.betOffers.map(betOffer => ({
+                  ...betOffer,
+                  outcomes: betOffer.outcomes.filter(outcome => message.boor.outcomes.findIndex(oc => oc.id === outcome.id) > -1),
+                })),
+              }))
+              console.log('BetOfferOddsRemoved', message.boor.eventId)
               break;
             default:
               break;
@@ -115,58 +275,26 @@ const ListViewMatchesComponent = () => {
     })
 
     socket.open()
-    // // Cleanup socket connection on component unmount
+    // Cleanup socket connection on component unmount
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [])
 
   return (
     <div className="listviewmatches-container">
+      <div className="events-list-header">
+        <h1>Today</h1>
+        <div className="event-betinfo-cols">
+          <div className="event-betinfo-col">Spread</div>
+          <div className="event-betinfo-col">Total</div>
+          <div className="event-betinfo-col">Moneyline</div>
+        </div>
+      </div>
       {events ? (
         <div className="events-list">
-          {events.map((item, index) => (
-            <div className="event-details" key={index}>
-              <div className="event-content">
-                <div className="event-teams">
-                  <div className="event-team">
-                    {item.event.tags.includes('AWAY_HOME') ? item.event.awayName : item.event.homeName}
-                    <div className="event-betinfo-cells">
-                      <div className="event-betinfo-cell">
-                        {item.betOffers[0]?.outcomes[0]?.odds}
-                      </div>
-                      <div className="event-betinfo-cell">
-                        {item.betOffers[1]?.outcomes[0]?.odds}
-                      </div>
-                      <div className="event-betinfo-cell">
-                        {item.betOffers[2]?.outcomes[0]?.odds}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="event-team">
-                    {item.event.tags.includes('AWAY_HOME') ? item.event.homeName : item.event.awayName}
-                    <div className="event-betinfo-cells">
-                      <div className="event-betinfo-cell">
-                        {item.betOffers[0]?.outcomes[1]?.odds}
-                      </div>
-                      <div className="event-betinfo-cell">
-                        {item.betOffers[1]?.outcomes[1]?.odds}
-                      </div>
-                      <div className="event-betinfo-cell">
-                        {item.betOffers[2]?.outcomes[1]?.odds}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="event-footer">
-                <div>
-                  <span className="mark-spr">SPR</span>
-                  <span>{new Date(item.event.start).toLocaleTimeString()}</span>
-                </div>
-                <a href="/" className="color-orange">More Wagers &gt;</a>
-              </div>
-            </div>
+          {events.map((item) => (
+            <EventDetails item={item} key={item.event.id} />
           ))}
         </div>
       ) : (
