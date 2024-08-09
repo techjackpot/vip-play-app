@@ -12,16 +12,16 @@ const TeamDetails = ({teamData}) => {
         )}
         <span>{teamData.name}</span>
       </div>
-      <div className="event-betinfo-cells">
-        <div className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''} ${!teamData.spread && 'empty'}`}>
+      <div className={`event-betinfo-cells ${!teamData.spread && !teamData.total && !teamData.moneyline ? 'dim' : ''}`}>
+        <div className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''} ${!teamData.spread ? 'empty' : ''}`}>
           <span className="text1">{teamData.spread?.text1}</span>
           <span className="text2">{teamData.spread?.text2}</span>
         </div>
-        <div className={`event-betinfo-cell ${teamData.totalData?.suspended ? 'suspended' : ''} ${!teamData.total && 'empty'}`}>
+        <div className={`event-betinfo-cell ${teamData.totalData?.suspended ? 'suspended' : ''} ${!teamData.total ? 'empty' : ''}`}>
           <span className="text1">{teamData.total?.text1}</span>
           <span className="text2">{teamData.total?.text2}</span>
         </div>
-        <div className={`event-betinfo-cell ${teamData.moneylineData?.suspended ? 'suspended' : ''} ${!teamData.moneyline && 'empty'}`}>
+        <div className={`event-betinfo-cell ${teamData.moneylineData?.suspended ? 'suspended' : ''} ${!teamData.moneyline ? 'empty' : ''}`}>
           <span className="text">{teamData.moneyline?.text}</span>
         </div>
       </div>
@@ -122,7 +122,7 @@ const EventDetails = ({item}) => {
         <div>
           <span className="event-status">SPR</span>
           {item.event.state === 'NOT_STARTED' && (
-            <span>{new Date(item.event.start).toLocaleTimeString()}</span>
+            <span>{new Date(item.event.start).toLocaleString()}</span>
           )}
         </div>
         <a href="/" className="color-orange">More Wagers &gt;</a>
@@ -131,16 +131,110 @@ const EventDetails = ({item}) => {
   )
 };
 
+const EventsList = ({events, league}) => {
+  return (
+    <div className="events-list-wrapper" id={league.href}>
+      <div className="events-list-header">
+        <h1>{league.heading}</h1>
+        <a href="">More Bets &gt;</a>
+      </div>
+      <div className="events-list-info">
+        <h2>{league.heading}</h2>
+        <div className="event-betinfo-cols">
+          <div className="event-betinfo-col">Spread</div>
+          <div className="event-betinfo-col">Total</div>
+          <div className="event-betinfo-col">Moneyline</div>
+        </div>
+      </div>
+      {events ? (
+        <div className="events-list">
+          {events.filter(item => item.event.sport === league.sport && item.event.group === league.group).slice(0, league.max).map((item) => (
+            <EventDetails item={item} key={item.event.id} />
+          ))}
+        </div>
+      ) : (
+        <p>Loading data...</p>
+      )}
+    </div>
+  )
+}
+
 const ListViewMatchesComponent = () => {
   const [events, setEventsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const leagues = [
+    {
+      sport: 'BASEBALL',
+      sport_code: 'baseball',
+      group: 'MLB',
+      group_code: 'mlb',
+      label: 'MLB',
+      heading: 'Baseball / MLB',
+      max: 10,
+      name: 'baseball/mlb',
+      href: 'baseball-mlb',
+    },
+    {
+      sport: 'BASKETBALL',
+      sport_code: 'basketball',
+      group: 'NBA',
+      group_code: 'nba',
+      label: 'NBA',
+      heading: 'NBA',
+      max: 3,
+      name: 'basketball/nba',
+      href: 'basketball-nba',
+    },
+    {
+      sport: 'AMERICAN_FOOTBALL',
+      sport_code: 'american_football',
+      group: 'NCAAF',
+      group_code: 'ncaaf',
+      label: 'NCAAF',
+      heading: 'American Football / NCAAF',
+      max: 3,
+      name: 'american_football/ncaaf',
+      href: 'american_football-ncaaf',
+    },
+    {
+      sport: 'AMERICAN_FOOTBALL',
+      sport_code: 'american_football',
+      group: 'NFL',
+      group_code: 'nfl',
+      label: 'NFL',
+      heading: 'American Football / NFL',
+      max: 3,
+      name: 'american_football/nfl',
+      href: 'american_football-nfl',
+    },
+  ];
 
   // Function to fetch data from the API
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get('https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/baseball/all/all?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true');
-      setEventsData(response.data.events?.filter(item => item.event.group === 'MLB').map(item => ({...item, score: item.liveData?.score})) || []);
+      const listviews = [
+        {
+          sport: 'baseball',
+          group: 'mlb',
+        },
+        {
+          sport: 'american_football',
+          group: 'nfl',
+        },
+        {
+          sport: 'american_football',
+          group: 'ncaaf',
+        },
+        {
+          sport: 'basketball',
+          group: 'nba',
+        },
+      ];
+      const responses = await Promise.all(
+        listviews.map(listview => axios.get(`https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/${listview.sport}/all/all?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true`))
+      );
+      setEventsData(responses.map(response => response.data.events?.map(item => ({...item, score: item.liveData?.score})) || []).flat());
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -150,7 +244,7 @@ const ListViewMatchesComponent = () => {
 
   useEffect(() => {
     fetchData(); // Initial fetch
-    const intervalId = setInterval(fetchData, 1000 * 15); // Fetch data every 15 seconds  
+    const intervalId = setInterval(fetchData, 1000 * 60); // Fetch data every 60 seconds  
     return () => clearInterval(intervalId); // Clean up the interval on component unmount
   }, []);  
 
@@ -165,12 +259,10 @@ const ListViewMatchesComponent = () => {
     socket.on('connect', () => {
       console.log('Socket connected');
       socket.emit('subscribe', {topic: 'v2018.kambi.en_GB.ev.json'})
-      socket.emit('subscribe', {topic: 'v2018.kambi.ev.json'})
     })
     socket.on('disconnect', (reason) => {
       console.log('Socket disconnected: ' + reason);
       socket.emit('unsubscribe', {topic: 'v2018.kambi.en_GB.ev.json'})
-      socket.emit('unsubscribe', {topic: 'v2018.kambi.ev.json'})
     })
     socket.on('reconnect', (attemptNumber) => {
       console.log('Socket reconnected');
@@ -188,7 +280,6 @@ const ListViewMatchesComponent = () => {
         const messages = JSON.parse(incomingMessage);
         messages.forEach(message => {
           let eventIndex, betOfferIndex, outcomeIndex
-          // console.log(message.mt)
           switch(message.mt) {
             case 4: // EventAdded
               if (message.ea.event.group === 'MLB') {
@@ -196,12 +287,12 @@ const ListViewMatchesComponent = () => {
                   event: message.ea.event,
                   betOffers: [],
                 }])
-                console.log('EventAdded', message.ea.event.id)
+                // console.log('EventAdded', message.ea.event.id)
               }
               break;
             case 18: // EventRemoved
               setEventsData((prevEvents) => prevEvents.filter(item => item.event.id !== message.er.eventId))
-              console.log('EventRemoved', message.er.eventId)
+              // console.log('EventRemoved', message.er.eventId)
               break;
             case 16: // EventScoreUpdated
               setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.score.eventId ? item : {
@@ -211,7 +302,7 @@ const ListViewMatchesComponent = () => {
                   ...message.score.score,
                 },
               }))
-              console.log('EventScoreUpdated', message.score.eventId)
+              // console.log('EventScoreUpdated', message.score.eventId)
               break;
             case 6: // BetOfferAdded
               setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.boa.eventId ? item : {
@@ -221,14 +312,14 @@ const ListViewMatchesComponent = () => {
                   message.boa.betOffer,
                 ],
               }))
-              console.log('BetOfferAdded', message.boa.eventId, message.boa.betOffer.id)
+              // console.log('BetOfferAdded', message.boa.eventId, message.boa.betOffer.id)
               break;
             case 7: // BetOfferRemoved
               setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.bor.eventId ? item : {
                 ...item,
                 betOffers: item.betOffers.filter(betOffer => betOffer.id !== message.bor.betOfferId),
               }))
-              console.log('BetOfferRemoved', message.bor.eventId, message.bor.betOfferId)
+              // console.log('BetOfferRemoved', message.bor.eventId, message.bor.betOfferId)
               break;
             case 8: // BetOfferStatusUpdated
               setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.bosu.eventId ? item : {
@@ -238,7 +329,7 @@ const ListViewMatchesComponent = () => {
                   ...message.bosu,
                 }),
               }))
-              console.log('BetOfferStatusUpdated', message.bosu.eventId, message.bosu.betOfferId)
+              // console.log('BetOfferStatusUpdated', message.bosu.eventId, message.bosu.betOfferId)
               break;
             case 22: // BetOfferOddsAdded
               setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.booa.eventId ? item : {
@@ -251,7 +342,7 @@ const ListViewMatchesComponent = () => {
                   ]
                 })),
               }))
-              console.log('BetOfferOddsAdded', message.booa.eventId)
+              // console.log('BetOfferOddsAdded', message.booa.eventId)
               break;
             case 11: // BetOfferOddsUpdated
               setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.boou.eventId ? item : {
@@ -264,7 +355,7 @@ const ListViewMatchesComponent = () => {
                   }))
                 })),
               }))
-              console.log('BetOfferOddsUpdated', message.boou.eventId)
+              // console.log('BetOfferOddsUpdated', message.boou.eventId)
               break;
             case 23: // BetOfferOddsRemoved
               setEventsData((prevEvents) => prevEvents.map(item => item.event.id !== message.boor.eventId ? item : {
@@ -274,7 +365,7 @@ const ListViewMatchesComponent = () => {
                   outcomes: betOffer.outcomes.filter(outcome => message.boor.outcomes.findIndex(oc => oc.id === outcome.id) > -1),
                 })),
               }))
-              console.log('BetOfferOddsRemoved', message.boor.eventId)
+              // console.log('BetOfferOddsRemoved', message.boor.eventId)
               break;
             default:
               break;
@@ -294,23 +385,16 @@ const ListViewMatchesComponent = () => {
 
   return (
     <div className="listviewmatches-container">
-      <div className="events-list-header">
-        <h1>Baseball/MLB</h1>
-        <div className="event-betinfo-cols">
-          <div className="event-betinfo-col">Spread</div>
-          <div className="event-betinfo-col">Total</div>
-          <div className="event-betinfo-col">Moneyline</div>
-        </div>
+      <div className="listviewmatches-nav">
+        {leagues.map((league) => (
+          <a href={`#${league.href}`} className="nav-link" key={league.name}>{league.label}</a>
+        ))}
       </div>
-      {events ? (
-        <div className="events-list">
-          {events.map((item) => (
-            <EventDetails item={item} key={item.event.id} />
-          ))}
-        </div>
-      ) : (
-        <p>Loading data...</p>
-      )}
+      <div className="events-list-container">
+        {leagues.map((league) => (
+          <EventsList events={events} league={league} key={league.name} />
+        ))}
+      </div>
     </div>
   );
 };
