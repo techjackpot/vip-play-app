@@ -11,6 +11,7 @@ const icons = {
 const ListViewMatchesComponent = () => {
   const leagues = [
     {
+      path: 'listView/american_football/nfl/all/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
       sport: 'AMERICAN_FOOTBALL',
       sport_code: 'american_football',
       group: 'NFL',
@@ -23,6 +24,7 @@ const ListViewMatchesComponent = () => {
       href: 'american_football-nfl',
     },
     {
+      path: 'listView/baseball/mlb/all/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
       sport: 'BASEBALL',
       sport_code: 'baseball',
       group: 'MLB',
@@ -36,6 +38,7 @@ const ListViewMatchesComponent = () => {
       icon: icons.baseball,
     },
     {
+      path: 'listView/baseball/all/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
       sport: 'BASKETBALL',
       sport_code: 'basketball',
       group: 'NBA',
@@ -48,6 +51,7 @@ const ListViewMatchesComponent = () => {
       href: 'basketball-nba',
     },
     {
+      path: 'listView/american_football/ncaaf/all/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
       sport: 'AMERICAN_FOOTBALL',
       sport_code: 'american_football',
       group: 'NCAAF',
@@ -58,6 +62,45 @@ const ListViewMatchesComponent = () => {
       max: 3,
       name: 'american_football/ncaaf',
       href: 'american_football-ncaaf',
+    },
+    {
+      path: 'listView/football/usa/mls/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
+      sport: 'FOOTBALL',
+      sport_code: 'football',
+      group: 'MLS',
+      group_code: 'mls',
+      label: 'MLS',
+      heading: 'Football / USA / MLS',
+      subheading: 'Today',
+      max: 3,
+      name: 'football/usa/mls',
+      href: 'football-usa-mls',
+    },
+    {
+      path: 'listView/football/england/premier_league/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
+      sport: 'FOOTBALL',
+      sport_code: 'football',
+      group: 'Premier League',
+      group_code: 'premier_league',
+      label: 'Premier League',
+      heading: 'Football / England / Premier League',
+      subheading: 'Today',
+      max: 3,
+      name: 'football/england/premier_league',
+      href: 'football-england-premier_league',
+    },
+    {
+      path: 'listView/football/spain/la_liga/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
+      sport: 'FOOTBALL',
+      sport_code: 'football',
+      group: 'La Liga',
+      group_code: 'la_liga',
+      label: 'La Liga',
+      heading: 'Football / Spain / La Liga',
+      subheading: 'Today',
+      max: 3,
+      name: 'football/spain/la_liga',
+      href: 'football-span-la_liga',
     },
   ];
   const [league, setLeague] = useState(leagues[0]);

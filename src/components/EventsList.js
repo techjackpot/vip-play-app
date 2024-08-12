@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-import EventPreview from "./EventPreview";
-import EventDetails from "./EventDetails";
+import FootballEventsList from './Sports/Football/EventsList';
+import GeneralEventsList from './Sports/General/EventsList';
 
 export default function EventsList({league}) {
   const [events, setEventsData] = useState([]);
@@ -12,8 +12,8 @@ export default function EventsList({league}) {
   const fetchData = async (updateLoading = false) => {
     updateLoading && setIsLoading(true);
     try {
-      const response = await axios.get(`https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/${league.sport_code}/all/all?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true`);
-      setEventsData(response.data.events?.filter(item => item.event.group === league.group).map(item => ({...item, score: item.liveData?.score})) || []);
+      const response = await axios.get(`https://eu-offering-api.kambicdn.com/offering/v2018/kambi/${league.path}`);
+      setEventsData(response.data.events?.filter(item => !league.groupMatches || item.event.group === league.group).map(item => ({...item, score: item.liveData?.score})) || []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -161,34 +161,9 @@ export default function EventsList({league}) {
     };
   }, []);
 
-  return (
-    <div className="events-list-wrapper" id={league.href}>
-      <div className="events-list-header">
-        <h1 className="heading">
-          {league.icon && <img className="league-icon" src={league.icon} alt="" />}
-          {league.heading}
-        </h1>
-        <a href="/">More Bets &gt;</a>
-      </div>
-      <div className="events-list-info">
-        <div className="subheading">{league.subheading}</div>
-        <div className="event-betinfo-cols">
-          <div className="event-betinfo-col">Spread</div>
-          <div className="event-betinfo-col">Total</div>
-          <div className="event-betinfo-col">Moneyline</div>
-        </div>
-      </div>
-      <div className="events-list">
-        {isLoading ? (
-          <>
-            <EventPreview />
-            <EventPreview />
-            <EventPreview />
-          </>
-        ) : events.map((item) => (
-          <EventDetails item={item} key={item.event.id} />
-        ))}
-      </div>
-    </div>
-  )
+  if (league.sport_code === 'football') {
+    return <FootballEventsList league={league} events={events} isLoading={isLoading} />;
+  } else {
+    return <GeneralEventsList league={league} events={events} isLoading={isLoading} />;
+  }
 };

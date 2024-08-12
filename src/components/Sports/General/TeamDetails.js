@@ -6,11 +6,13 @@ export default function TeamDetails({teamData}) {
   const [isMoneylineActive, setMoneylineActive] = useState(false);
   return (
     <div className="event-team">
-      <div className="event-team-name">
-        {teamData.event.state === 'STARTED' && (
-          <span className="score">{teamData.score}</span>
-        )}
-        <span>{teamData.name}</span>
+      <div className="event-team-names">
+        <div className="event-team-name">
+          {teamData.event.state === 'STARTED' && (
+            <span className="score">{teamData.score}</span>
+          )}
+          <span>{teamData.name}</span>
+        </div>
       </div>
       <div className={`event-betinfo-cells ${!teamData.spread && !teamData.total && !teamData.moneyline ? 'dim' : ''}`}>
         <div onClick={() => setSpreadActive(!isSpreadActive)} className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''} ${!teamData.spread ? 'empty' : ''} ${isSpreadActive ? 'active' : ''}`}>

@@ -27,12 +27,15 @@ $color-black: #030515;
     background: #FFF;
     z-index: 9999;
     box-shadow: 0px 5px 10px 0px #97A0B242;
+    overflow: auto;
+    box-sizing: border-box;
     .nav-link {
       font-size: 13px;
       font-weight: 600;
       margin: 0 12px;
       text-decoration: none;
       color: #64748B;
+      white-space: nowrap;
       &.active {
         color: $color-orange;
       }
@@ -129,6 +132,9 @@ $color-black: #030515;
       height: 16px;
       margin-right: 4px;
     }
+    a {
+      white-space: nowrap;
+    }
   }
   .events-list-info {
     display: flex;
@@ -154,6 +160,24 @@ $color-black: #030515;
       border-radius: 15px;
       overflow: hidden;
       background: #F7F8F9;
+      .event-details-info {
+        display: flex;
+        padding: 8px 8px 0;
+        align-items: center;
+        .subheading {
+          flex: 0 0 45%;
+          margin: 0 8px 0 0;
+        }
+        .event-betinfo-cols {
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          .event-betinfo-col {
+            flex: 1;
+            text-align: center;
+          }
+        }
+      }
       .event-content {
         padding: 8px;
         .event-teams {
@@ -166,20 +190,22 @@ $color-black: #030515;
             &:last-child {
               margin-bottom: 0;
             }
-            .event-team-name {
+            .event-team-names {
               flex: 0 0 45%;
-              font-size: 13px;
-              margin-right: 8px;
-              display: flex;
-              align-items: center;
-              .score {
-                background: #000;
-                color: white;
-                display: inline-block;
-                text-align: center;
-                width: 2em;
-                height: 100%;
-                margin-right: 4px;
+              .event-team-name {
+                font-size: 13px;
+                margin-right: 8px;
+                display: flex;
+                align-items: center;
+                .score {
+                  background: #000;
+                  color: white;
+                  display: inline-block;
+                  text-align: center;
+                  width: 2em;
+                  height: 100%;
+                  margin-right: 4px;
+                }
               }
             }
             .event-betinfo-cells {
