@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Carousel } from 'react-responsive-carousel';
+
 import SpecialsListCard from "./SpecialsListCard";
 
 export default function() {
@@ -34,10 +36,18 @@ export default function() {
   }
 
   return (
-    <div className="specials-wrapper">
+    <Carousel
+      showArrows={false}
+      showStatus={false}
+      showIndicators={false}
+      showThumbs={false}
+      renderArrowPrev={() => {}}
+      renderArrowNext={() => {}}
+      className="specials-wrapper"
+    >
       {cardsData.map(cardData => (
         <SpecialsListCard cardData={cardData} key={cardData.event.id} />
       ))}
-    </div>
+    </Carousel>
   )
 };
