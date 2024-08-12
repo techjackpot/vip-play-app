@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from 'react';
 import TeamDetails from "./TeamDetails";
 
-export default function() {
+export default function EventPreview() {
   const previewData = {
     event: {
       state: '',

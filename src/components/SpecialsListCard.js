@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function({cardData}) {
+export default function SpecialsListCard({cardData}) {
   const [isActive, setActive] = useState(false);
   return (
     <div className="specials-card">
@@ -12,7 +12,7 @@ export default function({cardData}) {
       <div className="special-card-event">
         <div className="special-card-event-name">{cardData.event.name}</div>
         <div className="special-card-betOffers">
-          {cardData.betOffers.map(betOffer => betOffer.betOfferType.name == 'Over/Under' ? (
+          {cardData.betOffers.map(betOffer => betOffer.betOfferType.name === 'Over/Under' ? (
             <div className="special-card-betOffer" key={betOffer.id}>
               <div className="special-card-betOffer-outcome">Over {betOffer.outcome.line / 1000}</div>
               <div className="special-card-betOffer-criterion">&nbsp;- {betOffer.criterion.label}</div>

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
 import EventPreview from "./EventPreview";
 import EventDetails from "./EventDetails";
 
-export default function({league}) {
+export default function EventsList({league}) {
   const [events, setEventsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   // Function to fetch data from the API
@@ -165,7 +165,7 @@ export default function({league}) {
     <div className="events-list-wrapper" id={league.href}>
       <div className="events-list-header">
         <h1 className="heading">
-          {league.icon && <img className="league-icon" src={league.icon} />}
+          {league.icon && <img className="league-icon" src={league.icon} alt="" />}
           {league.heading}
         </h1>
         <a href="/">More Bets &gt;</a>

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TeamDetails from "./TeamDetails";
 
-export default function({item}) {
+export default function EventDetails({item}) {
   const [homeData, setHomeData] = useState(null);
   const [awayData, setAwayData] = useState(null);
 

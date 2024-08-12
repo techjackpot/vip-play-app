@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function({teamData}) {
+export default function TeamDetails({teamData}) {
   const [isSpreadActive, setSpreadActive] = useState(false);
   const [isTotalActive, setTotalActive] = useState(false);
   const [isMoneylineActive, setMoneylineActive] = useState(false);
