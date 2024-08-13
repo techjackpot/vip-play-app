@@ -11,7 +11,7 @@ export default function EventsList({league, events, isLoading}) {
           {league.icon && <img className="league-icon" src={league.icon} alt="" />}
           {league.heading}
         </h1>
-        <a href="/">More Bets &gt;</a>
+        <a className="btn-more-bets" href="/">More Bets &gt;</a>
       </div>
       <div className="events-list-info">
         <div className="subheading">{league.subheading}</div>

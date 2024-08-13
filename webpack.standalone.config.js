@@ -4,7 +4,7 @@ module.exports = {
   entry: './src/standalone.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'listviewmatches-component.js',
+    filename: 'HomeScreen.js',
   },
   module: {
     rules: [

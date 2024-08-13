@@ -1,0 +1,42 @@
+$color-orange: #FB4F14;
+$color-black: #030515;
+$color-primary: #FFF;
+
+@mixin dark-theme {
+  background: #000;
+  color: white;
+}
+
+@mixin odd-button {
+  background: #E7EAEE;
+  padding: 0.5em 0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 600;
+  transition: background 0.25s ease;
+  .text2, .text {
+    color: $color-orange;
+  }
+  &.suspended {
+    color: #ABABAB;
+    background: #DCDCDC;
+    .text2, .text {
+      display: none;
+    }
+  }
+  &.empty {
+    background: transparent;
+  }
+  &.active {
+    background: $color-orange;
+    color: white;
+    .text2, .text {
+      color: white;
+    }
+  }
+}

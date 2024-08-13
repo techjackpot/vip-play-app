@@ -1,0 +1,247 @@
+@import './mixin.scss';
+
+.leagues-container {
+  padding: 0;
+  font-size: 10px;
+  position: relative;
+
+  color: $color-primary;
+  .color-primary {
+    color: $color-primary;
+  }
+  .color-orange {
+    color: $color-orange;
+  }
+
+  .leagues-nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 14px 12px;
+    background: #FFF;
+    z-index: 9999;
+    box-shadow: 0px 5px 10px 0px #97A0B242;
+    overflow: auto;
+    box-sizing: border-box;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .nav-link {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 0 12px;
+      text-decoration: none;
+      color: #64748B;
+      white-space: nowrap;
+      position: relative;
+      line-height: 15px;
+      transition: color 0.25s ease;
+      &.active {
+        color: $color-orange;
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: calc(100% + 34px);
+          height: 4px;
+          left: -17px;
+          bottom: -14px;
+          background: radial-gradient(50% 31250% at 50% 50%, $color-orange 0%, rgba(251, 79, 20, 0.00) 100%);
+        }
+      }
+    }
+  }
+
+  .events-list-container {
+    position: relative;
+    padding: 0 8px;
+  }
+  .events-list-wrapper {
+  }
+  .events-list-header {
+    display: flex;
+    padding: 24px 8px 20px;
+    align-items: flex-end;
+    justify-content: space-between;
+    .heading {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+    }
+    .league-icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+    .btn-more-bets {
+      white-space: nowrap;
+      color: $color-orange;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+  }
+  .events-list-info {
+    display: flex;
+    padding: 0 8px 8px;
+    align-items: center;
+    font-weight: 600;
+    line-height: 1;
+    .subheading {
+      flex: 0 0 45%;
+      margin: 0 8px 0 0;
+    }
+    .event-betinfo-cols {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      .event-betinfo-col {
+        flex: 1;
+        text-align: center;
+        margin-left: 2px;
+      }
+    }
+  }
+  .events-list {
+    .event-details {
+      margin: 0 0 1em;
+      border-radius: 15px;
+      overflow: hidden;
+      background: #F7F8F9;
+      .event-details-info {
+        display: flex;
+        padding: 8px 8px 0;
+        align-items: center;
+        .subheading {
+          flex: 0 0 45%;
+          margin: 0 8px 0 0;
+        }
+        .event-betinfo-cols {
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          .event-betinfo-col {
+            flex: 1;
+            text-align: center;
+          }
+        }
+      }
+      .event-content {
+        padding: 8px;
+        .event-teams {
+          .event-team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            margin-bottom: 2px;
+            &:last-child {
+              margin-bottom: 0;
+            }
+            .event-team-names {
+              flex: 0 0 45%;
+              .event-team-name {
+                font-size: 13px;
+                margin-right: 8px;
+                display: flex;
+                align-items: center;
+                .score {
+                  background: #000;
+                  color: white;
+                  display: inline-block;
+                  text-align: center;
+                  width: 2em;
+                  height: 100%;
+                  margin-right: 4px;
+                }
+              }
+            }
+            .event-betinfo-cells {
+              flex: 1;
+              display: flex;
+              font-size: 11px;
+              .event-betinfo-cell {
+                min-height: 37px;
+                box-sizing: border-box;
+                flex: 1;
+                margin-left: 4px;
+                @include odd-button;
+              }
+              &.dim {
+                .event-betinfo-cell {
+                  background: #DCDCDC;
+                }
+              }
+            }
+          }
+        }
+      }
+      .event-footer {
+        padding: 8px 15px;
+        display: flex;
+        justify-content: space-between;
+        background: #E7EAEE;
+        .event-status {
+          color: $color-orange;
+          border: solid 1px $color-orange;
+          border-radius: 15px;
+          font-size: 9px;
+          font-weight: 700;
+          padding: 1px 5px;
+          margin-right: 0.5em;
+        }
+        a {
+          text-decoration: none;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  .leagues-container {
+    @include dark-theme;
+    .leagues-nav {
+      border: 1px solid #050716;
+      background: #030616;
+      box-shadow: 0px 5px 10px 0px #1B1E34;
+      .nav-link {
+        color: white;
+        &.active {
+          color: $color-orange;
+        }
+      }
+    }
+    .events-list {
+      .event-details {
+        background: #252942;
+        .event-content {
+          .event-teams {
+            .event-team {
+              .event-betinfo-cells {
+                .event-betinfo-cell {
+                  background: #3C405F;
+                  &.active {
+                    background: #7E8196;
+                    .text2, .text {
+                      color: $color-orange;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .event-footer {
+          background: #252942;
+        }
+      }
+    }
+  }
+}

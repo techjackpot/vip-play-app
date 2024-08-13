@@ -1,0 +1,43 @@
+@import './mixin.scss';
+
+.topnav-container {
+  padding: 16px 0 8px;
+  .topnav-links {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0px 12px;
+    overflow: auto;
+    box-sizing: border-box;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .topnav-link {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 8px;
+      border-radius: 16px;
+      text-decoration: none;
+      color: white;
+      white-space: nowrap;
+      position: relative;
+      line-height: 15px;
+      transition: color 0.25s ease, background 0.25s ease;
+      margin-right: 6px;
+      &:last-child {
+        margin-right: 0;
+      }
+      &.active {
+        color: #000;
+        background: white;
+      }
+      img {
+        display: inline-block;
+        margin-right: 6px;
+      }
+    }
+  }
+
+}
