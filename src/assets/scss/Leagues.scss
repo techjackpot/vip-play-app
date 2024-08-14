@@ -119,7 +119,7 @@
         align-items: center;
         .subheading {
           flex: 0 0 45%;
-          margin: 0 8px 0 0;
+          margin-right: 6px;
         }
         .event-betinfo-cols {
           flex: 1;
@@ -145,19 +145,47 @@
             }
             .event-team-names {
               flex: 0 0 45%;
+              max-width: 45%;
+              margin-right: 6px;
               .event-team-name {
                 font-size: 13px;
                 margin-right: 8px;
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                .event-team-info {
+                  display: flex;
+                  align-items: center;
+                  width: 100%;
+                  img {
+                    display: block;
+                    width: 19px;
+                    height: 19px;
+                    margin-right: 6px;
+                  }
+                  span {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+                }
                 .score {
                   background: #000;
                   color: white;
-                  display: inline-block;
-                  text-align: center;
-                  width: 2em;
-                  height: 100%;
-                  margin-right: 4px;
+                  display: block;
+                  margin-left: 4px;
+                  box-sizing: border-box;
+                  padding: 0 4px;
+
+                  border-radius: 5px;
+                  border: 0.5px solid rgba(208, 213, 221, 0.50);
+                  background: #181925;
+
+                  color: #F6DD00;
+                  font-family: "Digital Numbers";
+                  font-size: 9px;
+                  line-height: 18px;
                 }
               }
             }
@@ -166,11 +194,16 @@
               display: flex;
               font-size: 11px;
               .event-betinfo-cell {
-                min-height: 37px;
+                min-height: 44px;
                 box-sizing: border-box;
                 flex: 1;
-                margin-left: 4px;
+                margin-left: 2px;
                 @include odd-button;
+                img {
+                  width: 10px;
+                  height: 14px;
+                  display: block;
+                }
               }
               &.dim {
                 .event-betinfo-cell {
@@ -179,21 +212,69 @@
               }
             }
           }
+          .team-separator {
+            color: #64748B;
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 11px;
+            height: 0;
+            display: flex;
+            align-items: center;
+            width: 104px;
+            margin-left: 32px;
+            img {
+              margin-left: 4px;
+            }
+          }
         }
       }
       .event-footer {
-        padding: 8px 15px;
+        padding: 6px 12px 8px;
         display: flex;
         justify-content: space-between;
         background: #E7EAEE;
-        .event-status {
-          color: $color-orange;
-          border: solid 1px $color-orange;
-          border-radius: 15px;
-          font-size: 9px;
-          font-weight: 700;
-          padding: 1px 5px;
-          margin-right: 0.5em;
+        .event-status-wrapper {
+          display: flex;
+          .event-status-label {
+            color: $color-orange;
+            border: solid 1px $color-orange;
+            border-radius: 15px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 5px;
+            margin-right: 0.5em;
+          }
+          .event-status {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 12px;
+            img {
+              margin-right: 4px;
+              width: 11px;
+              height: 11px;
+              display: block;
+
+            }
+            .remaining {
+              display: flex;
+              align-items: center;
+              margin-left: 4px;
+            }
+            .minutes, .seconds {
+              height: 15px;
+              display: flex;
+              align-items: center;
+              font-family: "Digital Numbers";
+              font-size: 8px;
+              color: white;
+              border-radius: 5px;
+              background: #3C405F;
+              padding: 0 4px;
+              margin: 0 2px;
+            }
+          }
         }
         a {
           text-decoration: none;

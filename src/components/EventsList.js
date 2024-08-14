@@ -145,6 +145,9 @@ export default function EventsList({league}) {
               }))
               // console.log('BetOfferOddsRemoved', message.boor.eventId)
               break;
+            case 28: // LiveStatistics
+              console.log(message.ls);
+              break;
             default:
               break;
           }
