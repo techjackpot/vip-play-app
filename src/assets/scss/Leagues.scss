@@ -241,6 +241,7 @@
             border-radius: 15px;
             font-size: 9px;
             font-weight: 700;
+            line-height: 11px;
             padding: 1px 5px;
             margin-right: 0.5em;
           }
@@ -250,12 +251,17 @@
             font-size: 10px;
             font-weight: 500;
             line-height: 12px;
-            img {
+            img.icon-clock {
               margin-right: 4px;
               width: 11px;
               height: 11px;
               display: block;
-
+            }
+            img.icon-live {
+              margin-right: 4px;
+              width: auto;
+              height: 13px;
+              display: block;
             }
             .remaining {
               display: flex;

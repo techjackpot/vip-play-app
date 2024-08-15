@@ -43,7 +43,7 @@ export default function SpecialsList() {
   const [cardsData, setCardsData] = useState(null);
 
   useEffect(() => {
-    axios.get(`https://eu-offering-api.kambicdn.com/offering/v2018/kambi/prepack/eventgroup/1000093656.json?lang=en_GB&market=GB&prePackTags=CUSTOM`).then((response) => {
+    axios.get(`https://ctn-api.kambi.com/offering/v2018/kambi/prepack/eventgroup/1000093656.json?lang=en_GB&market=GB&prePackTags=CUSTOM`).then((response) => {
       const specials = response.data;
       const cardsData = specials.prePacks.sort((a, b) => b.prePackSelections[0].combinations[0].odds.decimal - a.prePackSelections[0].combinations[0].odds.decimal).map(prePack => {
         const outcomes = prePack.prePackSelections[0].combinations[0].groups[0].groups.map(group => group.outcomes[0]); //.map(betOfferId => specials.betOffers.find(item => item.id === betOfferId));

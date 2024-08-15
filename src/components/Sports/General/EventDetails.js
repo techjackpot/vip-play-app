@@ -120,7 +120,7 @@ function ShowRemainingTime({start}) {
 
   return (
     <>
-      <img src={clockIcon} alt="" />
+      <img src={clockIcon} className="icon-clock" alt="" />
       <span>Starting soon</span>
       <div className="remaining">
         <span className="minutes">{('' + Math.floor(remaining / 60)).padStart(2, '0')}</span>
@@ -152,7 +152,7 @@ function EventFooter({state, start}) {
       <div className="event-status-wrapper">
         <span className="event-status-label">SPR</span>
         <div className="event-status">
-          {state === 'STARTED' && <img src={liveIcon} alt="" />}
+          {state === 'STARTED' && <img src={liveIcon} className="icon-live" alt="" />}
           {state === 'NOT_STARTED' && (isSoon ? (
             <ShowRemainingTime start={start} />
           ) : (

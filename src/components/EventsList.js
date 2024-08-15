@@ -12,7 +12,7 @@ export default function EventsList({league}) {
   const fetchData = async (updateLoading = false) => {
     updateLoading && setIsLoading(true);
     try {
-      const response = await axios.get(`https://eu-offering-api.kambicdn.com/offering/v2018/kambi/${league.path}`);
+      const response = await axios.get(`https://ctn-api.kambi.com/offering/v2018/kambi/${league.path}`);
       setEventsData(response.data.events?.filter(item => !league.groupMatches || item.event.group === league.group).map(item => ({...item, score: item.liveData?.score})) || []);
     } catch (error) {
       console.error('Error fetching data:', error);
