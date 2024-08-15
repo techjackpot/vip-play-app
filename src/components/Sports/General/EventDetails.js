@@ -94,8 +94,6 @@ function EventContent({item}) {
 
   if (!homeData || !awayData) return <></>;
 
-  console.log('rendering event content')
-
   return (
     <div className="event-content">
       <div className="event-teams">
@@ -146,7 +144,6 @@ function EventFooter({state, start}) {
     return () => clearInterval(intervalId); // Clean up the interval on component unmount
   }, []);
 
-  console.log('rendering event footer')
   return (
     <div className="event-footer">
       <div className="event-status-wrapper">
