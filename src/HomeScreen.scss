@@ -16,8 +16,7 @@
 @import './assets/scss/Specials.scss';
 @import './assets/scss/dark-theme.scss';
 
-body {
+.homescreen-container {
   @include dark-theme;
-
   font-family: Poppins;
 }
