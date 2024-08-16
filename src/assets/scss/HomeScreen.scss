@@ -8,13 +8,13 @@
   src: local('Digital Numbers'), url('https://res.cloudinary.com/production/raw/upload/v1723601771/Icons/VIP/DigitalNumbers-Regular.ttf') format('truetype');
 }
 
-@import './assets/scss/mixin.scss';
+@import './mixin.scss';
 
-@import './assets/scss/carousel.min.css';
-@import './assets/scss/TopNav.scss';
-@import './assets/scss/Leagues.scss';
-@import './assets/scss/Specials.scss';
-@import './assets/scss/dark-theme.scss';
+@import './carousel.min.css';
+@import './TopNav.scss';
+@import './Leagues.scss';
+@import './Specials.scss';
+@import './dark-theme.scss';
 
 .homescreen-container {
   @include dark-theme;

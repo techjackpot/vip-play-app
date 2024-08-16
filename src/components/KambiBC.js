@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+import {
+  useLoadBetslipsDispatch,
+} from '../hooks/redux/betslips';
+
 export default function KambiBC() {
+
+  const loadBetslips = useLoadBetslipsDispatch();
 
   useEffect(() => {
     (function (global) {
@@ -52,12 +58,12 @@ export default function KambiBC() {
       wapi.request(wapi.BETSLIP_OUTCOMES);
 
       wapi.subscribe((response, wapi) => {
-        // console.log(response);
         switch (response.type) {
           case wapi.BETSLIP_OUTCOMES:
-            // console.log('from subscribe', response.data)
-          break;
-          /* ... */
+            loadBetslips(response.data.outcomes);
+            break;
+          default:
+            break;
         }
       });
     });

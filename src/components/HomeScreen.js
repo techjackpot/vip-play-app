@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import './HomeScreen.scss';
+import '../assets/scss/HomeScreen.scss';
 
-import TopNav from './components/TopNav';
-import Promotions from './components/Promotions';
-import Leagues from './components/Leagues';
-import SpecialsList from './components/SpecialsList';
-import KambiBC from './components/KambiBC';
+import TopNav from './TopNav';
+import Promotions from './Promotions';
+import Leagues from './Leagues';
+import SpecialsList from './SpecialsList';
+import KambiBC from './KambiBC';
 
 export default function HomeScreen() {
   return (

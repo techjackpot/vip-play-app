@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
+import { useBetslips } from 'hooks/redux/betslips';
+
 const lockIcon = 'https://res.cloudinary.com/production/image/upload/v1723596902/Icons/VIP/lock.svg';
 
 export default function TeamDetails({teamData, teamIcon = ''}) {
   const [isSpreadActive, setSpreadActive] = useState(false);
   const [isTotalActive, setTotalActive] = useState(false);
   const [isMoneylineActive, setMoneylineActive] = useState(false);
+
+  const betslips = useBetslips();
+
+  useEffect(() => {
+    setSpreadActive(!!betslips.find(betslip => betslip.id === teamData.spread?.id));
+    setTotalActive(!!betslips.find(betslip => betslip.id === teamData.total?.id));
+    setMoneylineActive(!!betslips.find(betslip => betslip.id === teamData.moneyline?.id));
+  }, [betslips, teamData]);
 
   const handleWapiOutcomes = (outcome, is_adding) => {
     const wapi = window.wapi;
@@ -21,15 +31,24 @@ export default function TeamDetails({teamData, teamIcon = ''}) {
   };
 
   const handleSpreadClick = () => {
-    setSpreadActive(!isSpreadActive);
+    if (teamData.spreadData.suspended) {
+      return;
+    }
+    // setSpreadActive(!isSpreadActive);
     handleWapiOutcomes(teamData.spread, !isSpreadActive);
   };
   const handleTotalClick = () => {
-    setTotalActive(!isTotalActive);
+    if (teamData.totalData.suspended) {
+      return;
+    }
+    // setTotalActive(!isTotalActive);
     handleWapiOutcomes(teamData.total, !isTotalActive);
   };
   const handleMoneylineClick = () => {
-    setMoneylineActive(!isMoneylineActive);
+    if (teamData.moneylineData.suspended) {
+      return;
+    }
+    // setMoneylineActive(!isMoneylineActive);
     handleWapiOutcomes(teamData.moneyline, !isMoneylineActive);
   };
   return (
@@ -46,7 +65,7 @@ export default function TeamDetails({teamData, teamIcon = ''}) {
         </div>
       </div>
       <div className={`event-betinfo-cells ${!teamData.spread && !teamData.total && !teamData.moneyline ? 'dim' : ''}`}>
-        <div onClick={() => handleSpreadClick()} className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''} ${!teamData.spread ? 'empty' : ''} ${isSpreadActive ? 'active' : ''}`}>
+        <div onClick={() => handleSpreadClick()} className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''} ${!teamData.spread ? 'empty' : ''} ${isSpreadActive ? 'active' : 'notactive'}`}>
           <span className="text1">{teamData.spread?.text1}</span>
           <span className="text2">{teamData.spread?.text2}</span>
           {teamData.spreadData?.suspended && <img src={lockIcon} alt="" />}
