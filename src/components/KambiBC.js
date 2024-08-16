@@ -49,10 +49,13 @@ export default function KambiBC() {
     window.KambiWidget.ready.then(function (wapi) {
       window.wapi = wapi;
 
+      wapi.request(wapi.BETSLIP_OUTCOMES);
+
       wapi.subscribe((response, wapi) => {
+        // console.log(response);
         switch (response.type) {
-          case wapi.WIDGET_HEIGHT:
-            console.log('Current height is: ', response.data);
+          case wapi.BETSLIP_OUTCOMES:
+            // console.log('from subscribe', response.data)
           break;
           /* ... */
         }

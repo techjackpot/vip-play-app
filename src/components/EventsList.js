@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
+import moment from 'moment';
 
 import FootballEventsList from './Sports/Football/EventsList';
 import GeneralEventsList from './Sports/General/EventsList';
@@ -13,7 +14,13 @@ export default function EventsList({league}) {
     updateLoading && setIsLoading(true);
     try {
       const response = await axios.get(`https://ctn-api.kambi.com/offering/v2018/kambi/${league.path}`);
-      setEventsData(response.data.events?.filter(item => !league.groupMatches || item.event.group === league.group).map(item => ({...item, score: item.liveData?.score})) || []);
+      setEventsData(
+        response.data.events
+          ?.filter(item => !league.groupMatches || item.event.group === league.group)
+          .filter(item => moment(item.event.start).diff(moment(), 'days') > -1)
+          .map(item => ({...item, score: item.liveData?.score}))
+          || []
+      );
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
