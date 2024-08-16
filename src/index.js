@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import storeWithPersistor from './store';
 
+import 'index.scss';
+
 import HomeScreen from './components/HomeScreen'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
