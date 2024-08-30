@@ -20,6 +20,7 @@ export default function LeaguesComponent({children}) {
     },
     {
       path: 'listView/american_football/ncaaf/all/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
+      fullPath: 'https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/american_football/ncaaf/all/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
       sport: 'AMERICAN_FOOTBALL',
       sport_code: 'american_football',
       group: 'NCAAF',
