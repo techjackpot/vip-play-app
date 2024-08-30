@@ -68,14 +68,16 @@ export default function TeamDetails({teamData, teamIcon = ''}) {
         <div onClick={() => handleSpreadClick()} className={`event-betinfo-cell ${teamData.spreadData?.suspended ? 'suspended' : ''} ${!teamData.spread ? 'empty' : ''} ${isSpreadActive ? 'active' : 'notactive'}`}>
           <span className="text1">{teamData.spread?.text1}</span>
           <span className="text2">{teamData.spread?.text2}</span>
-          {teamData.spreadData?.suspended && <img src={lockIcon} alt="" />}
+          {(teamData.spreadData?.suspended || (!teamData.spread?.text1 && !teamData.spread?.text2)) && <img src={lockIcon} alt="" />}
         </div>
         <div onClick={() => handleTotalClick()} className={`event-betinfo-cell ${teamData.totalData?.suspended ? 'suspended' : ''} ${!teamData.total ? 'empty' : ''} ${isTotalActive ? 'active' : ''}`}>
           <span className="text1">{teamData.total?.text1}</span>
           <span className="text2">{teamData.total?.text2}</span>
+          {(teamData.totalData?.suspended || (!teamData.total?.text1 && !teamData.total?.text2)) && <img src={lockIcon} alt="" />}
         </div>
         <div onClick={() => handleMoneylineClick()} className={`event-betinfo-cell ${teamData.moneylineData?.suspended ? 'suspended' : ''} ${!teamData.moneyline ? 'empty' : ''} ${isMoneylineActive ? 'active' : ''}`}>
           <span className="text">{teamData.moneyline?.text}</span>
+          {(teamData.moneylineData?.suspended || (!teamData.moneyline?.text)) && <img src={lockIcon} alt="" />}
         </div>
       </div>
     </div>
