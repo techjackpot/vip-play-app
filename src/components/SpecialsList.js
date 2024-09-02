@@ -2,8 +2,35 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Carousel } from 'react-responsive-carousel';
 
+import { useBetslips } from 'hooks/redux/betslips';
+
 function SpecialsListCard({cardData}) {
   const [isActive, setActive] = useState(false);
+
+  const betslips = useBetslips();
+
+  useEffect(() => {;
+    setActive(!!betslips.find(betslip => betslip.id === cardData.betOffers[0].outcome.id));
+  }, [cardData]);
+
+  const handleWapiOutcomes = (outcome, is_adding) => {
+    const wapi = window.wapi;
+    if (!wapi) return;
+    if (is_adding) {
+      wapi.set(wapi.BETSLIP_OUTCOMES, {
+        updateMode: wapi.BETSLIP_OUTCOMES_ARGS.UPDATE_APPEND,
+        outcomes: [outcome.id],
+        couponType: wapi.BETSLIP_OUTCOMES_ARGS.TYPE_SINGLE
+      });
+    } else {
+      wapi.set(wapi.BETSLIP_OUTCOMES_REMOVE, {outcomes: [outcome.id]});
+    }
+  };
+
+  const handleOnClick = () => {
+    handleWapiOutcomes(cardData.betOffers[0].outcome, !isActive);
+  };
+
   const icon = 'https://res.cloudinary.com/production/image/upload/v1723573889/Icons/VIP/special-line.svg';
 
   return (
@@ -34,7 +61,7 @@ function SpecialsListCard({cardData}) {
           ))}
         </div>
       </div>
-      <div className={`special-card-odds ${isActive? 'active' : ''}`} onClick={() => setActive(!isActive)}><span className="text">{cardData.odds}</span></div>
+      <div className={`special-card-odds ${isActive? 'active' : ''}`} onClick={handleOnClick}><span className="text">{cardData.odds}</span></div>
     </div>
   )
 };

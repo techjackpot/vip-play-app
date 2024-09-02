@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
 const liveIcon = 'https://res.cloudinary.com/production/image/upload/v1723538992/Icons/VIP/live.svg';
+const liveScoreIcon = 'https://res.cloudinary.com/production/image/upload/v1725155718/Icons/VIP/Live_Score.svg';
 const clockIcon = 'https://res.cloudinary.com/production/image/upload/v1723625829/Icons/VIP/clock.svg';
 
 function ShowRemainingTime({start}) {
@@ -49,6 +50,7 @@ export default function EventFooter({state, start}) {
         <span className="event-status-label">SPR</span>
         <div className="event-status">
           {state === 'STARTED' && <img src={liveIcon} className="icon-live" alt="" />}
+          {state === 'STARTED' && <img src={liveScoreIcon} className="icon-live-score" alt="" />}
           {state === 'NOT_STARTED' && (isSoon ? (
             <ShowRemainingTime start={start} />
           ) : (

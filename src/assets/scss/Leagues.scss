@@ -164,7 +164,7 @@
                     height: 19px;
                     margin-right: 6px;
                   }
-                  span {
+                  span.team-name {
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -186,6 +186,8 @@
                   font-family: "Digital Numbers";
                   font-size: 9px;
                   line-height: 18px;
+
+                  margin-left: auto;
                 }
               }
             }
@@ -235,6 +237,7 @@
         background: #E7EAEE;
         .event-status-wrapper {
           display: flex;
+          align-items: center;
           .event-status-label {
             color: $color-orange;
             border: solid 1px $color-orange;

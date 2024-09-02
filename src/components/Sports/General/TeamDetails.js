@@ -19,6 +19,7 @@ export default function TeamDetails({teamData, teamIcon = ''}) {
 
   const handleWapiOutcomes = (outcome, is_adding) => {
     const wapi = window.wapi;
+    if (!wapi) return;
     if (is_adding) {
       wapi.set(wapi.BETSLIP_OUTCOMES, {
         updateMode: wapi.BETSLIP_OUTCOMES_ARGS.UPDATE_APPEND,
@@ -57,11 +58,11 @@ export default function TeamDetails({teamData, teamIcon = ''}) {
         <div className="event-team-name">
           <div className="event-team-info">
             <img src={teamIcon} alt="" />
-            <span>{teamData.name}</span>
+            <span className="team-name">{teamData.name}</span>
+            {teamData.event.state === 'STARTED' && (
+              <span className="score">{teamData.score}</span>
+            )}
           </div>
-          {teamData.event.state === 'STARTED' && (
-            <span className="score">{teamData.score}</span>
-          )}
         </div>
       </div>
       <div className={`event-betinfo-cells ${!teamData.spread && !teamData.total && !teamData.moneyline ? 'dim' : ''}`}>
