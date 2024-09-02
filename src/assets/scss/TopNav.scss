@@ -97,12 +97,19 @@
     display: flex;
     justify-content: flex-end;
     .btn-search-type {
-      border: solid 1px $color-orange;
-      color: $color-orange;
-      background: transparent;
       border-radius: 100px;
       line-height: 30px;
       padding: 0 14px;
+      border: solid 1px $color-orange;
+      transition: all 0.25s ease;
+      &.favorites {
+        color: $color-orange;
+        background: transparent;
+      }
+      &.all-sports {
+        background: $color-orange;
+        color: white;
+      }
     }
   }
 
@@ -118,13 +125,13 @@
     .nav-link-li {
       border-bottom: solid 1px #252942;
       &:last-child {
-        border-bottom: 0px;
+        border-bottom: 0;
       }
 
       .main-nav-link {
         position: relative;
         display: block;
-        padding: 12px 0 12px 32px;
+        padding: 12px 0 12px 36px;
         font-size: 13px;
         line-height: 15px;
         font-weight: 600;
@@ -133,6 +140,42 @@
           left: 0;
           top: 50%;
           transform: translateY(-50%);
+          width: 32px;
+          text-align: center;
+        }
+        .caret {
+          float: right;
+          color: $color-orange;
+        }
+      }
+
+      .main-nav-links {
+        display: none;
+        margin-top: 0;
+        margin-bottom: 8px;
+        .nav-link-li {
+          border-bottom: 0;
+          .main-nav-link {
+            padding-top: 6px;
+            padding-bottom: 6px;
+          }
+        }
+      }
+
+      &.opened {
+        .main-nav-link {
+          .caret {
+            transform: rotate(90deg);
+          }
+        }
+        .main-nav-links {
+          display: block;
+        }
+      }
+      &.total_count {
+        .main-nav-link {
+          color: $color-orange;
+          padding-left: 4px;
         }
       }
     }
