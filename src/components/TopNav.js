@@ -329,6 +329,7 @@ function Search({active, setSearchActive}) {
   ];
 
   const [searchType, setSearchType] = useState('favorites');
+  const [isSearchFocus, setSearchFocus] = useState(false);
   const toggleSearchType = () => {
     if (searchType == 'all-sports') {
       setSearchType('favorites');
@@ -346,15 +347,50 @@ function Search({active, setSearchActive}) {
       </div>
       <div className="search-bar">
         <img src={searchIcon} alt="" />
-        <input className="search-input" type="search" placeholder="Search" />
+        <input className="search-input" type="search" placeholder="Search" onFocus={() => setSearchFocus(true)} onBlur={() => setSearchFocus(false)} />
       </div>
-      <div className="search-content-type">
-        <button className={`btn-search-type ${searchType}`} onClick={(e) => toggleSearchType()}>All Sports</button>
-      </div>
-      <div className="search-content">
-        {searchType == 'favorites' && <SearchContentLinks links={navLinks} /> }
-        {searchType == 'all-sports' && <SearchContentLinks links={sports} /> }
-      </div>
+      {isSearchFocus ? (
+        <div className="search-result">
+          <div className="search-trending">
+            <div>
+              <img src="https://res.cloudinary.com/production/image/upload/v1725288663/Icons/VIP/trending.svg" alt="Trending" />
+              &nbsp;&nbsp;Trending
+            </div>
+            <div className="trending-keywords">
+              <span>DRIVE PARLEYS</span>
+              <span>NHL</span>
+              <span>NCAAF</span>
+              <span>GAME LINES</span>
+              <span>LIVE TO SCORERS</span>
+              <span>Aaron Judge</span>
+            </div>
+          </div>
+          <div className="search-recent">
+            <div>
+              <img src="https://res.cloudinary.com/production/image/upload/v1725288663/Icons/VIP/recent-search.svg" alt="Recent Searches" />
+              &nbsp;&nbsp;Recent Searches
+            </div>
+            <div className="recent-search-items">
+              <div className="recent-search-item">
+                <span>Tennis</span><span className="delete">&times;</span>
+              </div>
+              <div className="recent-search-item">
+                <span>soce</span><span className="delete">&times;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="search-content-type">
+            <button className={`btn-search-type ${searchType}`} onClick={(e) => toggleSearchType()}>All Sports</button>
+          </div>
+          <div className="search-content">
+            {searchType == 'favorites' && <SearchContentLinks links={navLinks} /> }
+            {searchType == 'all-sports' && <SearchContentLinks links={sports} /> }
+          </div>
+        </>
+      )}
     </div>
   )
 }
