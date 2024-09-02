@@ -27,52 +27,52 @@ function Search({active, setSearchActive}) {
     {
       name: 'nfl',
       label: 'NFL',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247268/Icons/VIP/nfl.svg',
     },
     {
       name: 'wnba',
       label: 'WNBA',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247268/Icons/VIP/wnba.svg',
     },
     {
       name: 'tennis',
       label: 'Tennis',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247265/Icons/VIP/tennis.svg',
     },
     {
       name: 'soccer',
       label: 'Soccer',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247268/Icons/VIP/soccer.svg',
     },
     {
       name: 'golf',
       label: 'Golf',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247265/Icons/VIP/golf.svg',
     },
     {
       name: 'nhl',
       label: 'NHL',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247267/Icons/VIP/nhl.svg',
     },
     {
       name: 'nba',
       label: 'NBA',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247267/Icons/VIP/nba.svg',
     },
     {
       name: 'ufc',
       label: 'UFC',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247266/Icons/VIP/ufc.svg',
     },
     {
       name: 'ncaa_football',
       label: 'NCAA Football',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247266/Icons/VIP/ncaa_football.svg',
     },
     {
       name: 'ncaa_basketball',
       label: 'NCAA Basketball',
-      icon: '',
+      icon: 'https://res.cloudinary.com/production/image/upload/v1725247266/Icons/VIP/ncaa_basketball.svg',
     },
   ];
   const sports = [];
