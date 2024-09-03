@@ -3,8 +3,20 @@ import TeamDetails from "./TeamDetails";
 import EventFooter from './EventFooter';
 
 const separatorIcon = 'https://res.cloudinary.com/production/image/upload/v1723601390/Icons/VIP/team-separator.svg';
-const teamIcon1 = 'https://res.cloudinary.com/production/image/upload/v1723623375/Icons/VIP/team-1.svg';
-const teamIcon2 = 'https://res.cloudinary.com/production/image/upload/v1723623376/Icons/VIP/team-2.svg';
+const teamIcons = [
+  'https://res.cloudinary.com/production/image/upload/v1723623375/Icons/VIP/team-1.svg',
+  'https://res.cloudinary.com/production/image/upload/v1723623376/Icons/VIP/team-2.svg',
+  'https://res.cloudinary.com/production/image/upload/v1725391918/Icons/VIP/team-3.png',
+  'https://res.cloudinary.com/production/image/upload/v1725391918/Icons/VIP/team-4.png',
+  'https://res.cloudinary.com/production/image/upload/v1725391918/Icons/VIP/team-5.png',
+  'https://res.cloudinary.com/production/image/upload/v1725391918/Icons/VIP/team-6.png',
+  'https://res.cloudinary.com/production/image/upload/v1725391918/Icons/VIP/team-7.png',
+  'https://res.cloudinary.com/production/image/upload/v1725391918/Icons/VIP/team-8.png',
+];
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 function TeamSeparator() {
   return (
@@ -18,6 +30,8 @@ function EventContent({item}) {
 
   const [homeData, setHomeData] = useState(null);
   const [awayData, setAwayData] = useState(null);
+  const [team1IconIndex] = useState(getRandomInt(teamIcons.length));
+  const [team2IconIndex] = useState(getRandomInt(teamIcons.length));
 
   const fillSpreadData = (outcome, teamData) => {
     teamData.spread = null;
@@ -95,9 +109,9 @@ function EventContent({item}) {
   return (
     <div className="event-content">
       <div className="event-teams">
-        <TeamDetails teamData={homeData} teamIcon={teamIcon1} />
+        <TeamDetails teamData={homeData} teamIcon={teamIcons[team1IconIndex]} />
         <TeamSeparator />
-        <TeamDetails teamData={awayData} teamIcon={teamIcon2} />
+        <TeamDetails teamData={awayData} teamIcon={teamIcons[team2IconIndex]} />
       </div>
     </div>
   )

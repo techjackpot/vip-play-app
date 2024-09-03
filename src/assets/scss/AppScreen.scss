@@ -39,3 +39,11 @@ body {
     overflow: auto;
   }
 }
+
+.betsscreen-container, .casinoscreen-container, .rewardsscreen-container {
+  height: 100%;
+  img {
+    width: 100%;
+    object-position: top;
+  }
+}

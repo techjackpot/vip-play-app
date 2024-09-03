@@ -6,6 +6,9 @@ import BottomNav from './BottomNav';
 import KambiBC from './KambiBC';
 import HomeScreen from './HomeScreen';
 import LiveNowScreen from './LiveNowScreen';
+import BetsScreen from './BetsScreen';
+import CasinoScreen from './CasinoScreen';
+import RewardsScreen from './RewardsScreen';
 
 export default function AppScreen() {
   const [activeScreen, setActiveScreen] = useState('home');
@@ -15,6 +18,9 @@ export default function AppScreen() {
       <div className="screen-container">
         {activeScreen === 'home' && <HomeScreen />}
         {activeScreen === 'live' && <LiveNowScreen />}
+        {activeScreen === 'bets' && <BetsScreen />}
+        {activeScreen === 'casino' && <CasinoScreen />}
+        {activeScreen === 'rewards' && <RewardsScreen />}
       </div>
       <BottomNav activeScreen={activeScreen} setActiveScreen={setActiveScreen} />
       <KambiBC />

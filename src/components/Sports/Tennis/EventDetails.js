@@ -3,8 +3,6 @@ import TeamDetails from "./TeamDetails";
 import EventFooter from './EventFooter';
 
 const separatorIcon = 'https://res.cloudinary.com/production/image/upload/v1723601390/Icons/VIP/team-separator.svg';
-const teamIcon1 = 'https://res.cloudinary.com/production/image/upload/v1723623375/Icons/VIP/team-1.svg';
-const teamIcon2 = 'https://res.cloudinary.com/production/image/upload/v1723623376/Icons/VIP/team-2.svg';
 
 function TeamSeparator() {
   return (

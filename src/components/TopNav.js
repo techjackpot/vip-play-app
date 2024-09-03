@@ -413,11 +413,11 @@ export default function TopNav() {
       cannot_active: true,
       is_search: true,
     },
-    {
-      name: 'live',
-      label: 'Live',
-      icon: '',
-    },
+    // {
+    //   name: 'live',
+    //   label: 'Live',
+    //   icon: '',
+    // },
     {
       name: 'promos',
       label: 'Promos',
