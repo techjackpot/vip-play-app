@@ -57,7 +57,7 @@ export default function TeamDetails({teamData, teamIcon = ''}) {
       <div className="event-team-names">
         <div className="event-team-name">
           <div className="event-team-info">
-            <img src={teamIcon} alt="" />
+            {teamIcon && <img src={teamIcon} alt="" />}
             <span className="team-name">{teamData.name}</span>
             {teamData.event.state === 'STARTED' && (
               <span className="score">{teamData.score}</span>

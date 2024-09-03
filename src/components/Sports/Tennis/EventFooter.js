@@ -50,7 +50,6 @@ export default function EventFooter({state, start}) {
         <span className="event-status-label">SPR</span>
         <div className="event-status">
           {state === 'STARTED' && <img src={liveIcon} className="icon-live" alt="" />}
-          {state === 'STARTED' && <img src={liveScoreIcon} className="icon-live-score" alt="" />}
           {state === 'NOT_STARTED' && (isSoon ? (
             <ShowRemainingTime start={start} />
           ) : (

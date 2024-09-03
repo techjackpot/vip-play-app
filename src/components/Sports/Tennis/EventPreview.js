@@ -6,8 +6,6 @@ export default function EventPreview() {
     event: {
       state: '',
     },
-    spread: null,
-    total: null,
     moneyline: null,
   };
 

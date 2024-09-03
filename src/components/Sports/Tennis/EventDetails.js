@@ -9,7 +9,7 @@ const teamIcon2 = 'https://res.cloudinary.com/production/image/upload/v172362337
 function TeamSeparator() {
   return (
     <div className="team-separator">
-      @ <img src={separatorIcon} alt="" />
+      VS <img src={separatorIcon} alt="" />
     </div>
   )
 }
@@ -19,71 +19,40 @@ function EventContent({item}) {
   const [homeData, setHomeData] = useState(null);
   const [awayData, setAwayData] = useState(null);
 
-  const fillSpreadData = (outcome, teamData) => {
-    teamData.spread = null;
-    if (outcome) {
-      teamData.spread = {
-        ...outcome,
-        text1: outcome.line > 0 ? '+' + outcome.line / 1000 : outcome.line / 1000,
-        text2: (outcome.odds / 1000).toFixed(2),
-      };
-    }
-  };
-
-  const fillTotalData = (outcome, teamData) => {
-    teamData.total = null;
-    if (outcome) {
-      teamData.total = {
-        ...outcome,
-        text1: outcome.label[0] + ' ' + outcome.line / 1000,
-        text2: (outcome.odds / 1000).toFixed(2),
-      };
-    }
-  };
-
   const fillMoneylineData = (outcome, teamData) => {
     teamData.moneyline = null;
     if (outcome) {
       teamData.moneyline = {
         ...outcome,
         text: (outcome.odds / 1000).toFixed(2),
+        suspended: outcome.status === 'SUSPENDED',
       };
     }
   }
 
   useEffect(() => {
     const isAway = item.event.tags.includes('AWAY_HOME');
-    const spreadData = item.betOffers.find(betOffer => betOffer.betOfferType.name === 'Handicap');
-    const totalData = item.betOffers.find(betOffer => betOffer.betOfferType.name === 'Over/Under');
     const moneylineData = item.betOffers.find(betOffer => betOffer.betOfferType.name === 'Match');
 
     const homeData = {
       name: isAway ? item.event.awayName : item.event.homeName,
       event: item.event,
-      spreadData,
-      totalData,
       moneylineData,
     };
     const awayData = {
       name: isAway ? item.event.homeName : item.event.awayName,
       event: item.event,
-      spreadData,
-      totalData,
       moneylineData,
     };
 
-    fillSpreadData(spreadData?.outcomes?.find(outcome => outcome.participant === homeData.name), homeData);
-    fillSpreadData(spreadData?.outcomes?.find(outcome => outcome.participant === awayData.name), awayData);
-
-    fillTotalData(totalData?.outcomes?.find(outcome => outcome.label === 'Over'), homeData);
-    fillTotalData(totalData?.outcomes?.find(outcome => outcome.label === 'Under'), awayData);
-
-    fillMoneylineData(moneylineData?.outcomes?.find(outcome => outcome.participant === homeData.name), homeData);
-    fillMoneylineData(moneylineData?.outcomes?.find(outcome => outcome.participant === awayData.name), awayData);
+    fillMoneylineData(moneylineData?.outcomes?.find(outcome => outcome.label === homeData.name), homeData);
+    fillMoneylineData(moneylineData?.outcomes?.find(outcome => outcome.label === awayData.name), awayData);
 
     if (item.score) {
       homeData.score = isAway ? item.score.away : item.score.home;
+      homeData.setScores = isAway ? item.liveData.statistics.sets.away : item.liveData.statistics.sets.home;
       awayData.score = isAway ? item.score.home : item.score.away;
+      awayData.setScores = isAway ? item.liveData.statistics.sets.home : item.liveData.statistics.sets.away;
     }
 
     setHomeData(homeData);
@@ -95,9 +64,9 @@ function EventContent({item}) {
   return (
     <div className="event-content">
       <div className="event-teams">
-        <TeamDetails teamData={homeData} teamIcon={teamIcon1} />
+        <TeamDetails teamData={homeData} />
         <TeamSeparator />
-        <TeamDetails teamData={awayData} teamIcon={teamIcon2} />
+        <TeamDetails teamData={awayData} />
       </div>
     </div>
   )

@@ -59,6 +59,19 @@
     padding: 0 8px 8px;
   }
   .events-list-wrapper {
+    &.tennis-list {
+      .events-list-info .subheading {
+        flex: 0 0 80%;
+      }
+      .events-list .event-details .event-content .event-teams .event-team .event-team-names {
+        flex: 0 0 80%;
+        max-width: 80%;
+      }
+      .events-list .event-details .event-content .event-teams .event-team .event-team-names .event-team-name .score {
+        background: transparent;
+        border: 0 none;
+      }
+    }
   }
   .events-list-header {
     display: flex;
@@ -143,6 +156,25 @@
             &:last-child {
               margin-bottom: 0;
             }
+            &:first-child {
+              .event-team-names {
+                .event-team-name {
+                  .event-team-info {
+                    .set-score:before {
+                      content: attr(round);
+                      display: block;
+                      position: absolute;
+                      bottom: 100%;
+                      left: 50%;
+                      transform: translateX(-50%);
+                      color: #7E8196;
+                      font-size: 9px;
+                      line-height: 13px;
+                    }
+                  }
+                }
+              }
+            }
             .event-team-names {
               flex: 0 0 45%;
               max-width: 45%;
@@ -188,6 +220,13 @@
                   line-height: 18px;
 
                   margin-left: auto;
+                }
+                .set-score {
+                  width: 1em;
+                  display: block;
+                  text-align: center;
+                  margin-left: 8px;
+                  position: relative;
                 }
               }
             }
