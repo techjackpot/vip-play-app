@@ -4,10 +4,12 @@ import io from 'socket.io-client';
 import moment from 'moment';
 
 import FootballEventsList from './Sports/Football/EventsList';
+import TennisEventsList from './Sports/Tennis/EventsList';
 import GeneralEventsList from './Sports/General/EventsList';
 
 export default function EventsList({league}) {
   const [events, setEventsData] = useState([]);
+  const [intervalID, setIntervalID] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   // Function to fetch data from the API
   const fetchData = async (updateLoading = false) => {
@@ -31,7 +33,11 @@ export default function EventsList({league}) {
 
   useEffect(() => {
     fetchData(true); // Initial fetch
+    if (intervalID) {
+      clearInterval(intervalID);
+    }
     const intervalId = setInterval(fetchData, 1000 * 15); // Fetch data every 15 seconds  
+    setIntervalID(intervalID);
     return () => clearInterval(intervalId); // Clean up the interval on component unmount
   }, [league]);
 
@@ -174,6 +180,8 @@ export default function EventsList({league}) {
 
   if (league.sport_code === 'football') {
     return <FootballEventsList league={league} events={events} isLoading={isLoading} />;
+  } else if (league.sport_code === 'tennis') {
+    return <TennisEventsList league={league} events={events} isLoading={isLoading} />;
   } else {
     return <GeneralEventsList league={league} events={events} isLoading={isLoading} />;
   }
