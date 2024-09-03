@@ -6,13 +6,13 @@ import storeWithPersistor from './store';
 
 import 'index.scss';
 
-import HomeScreen from './components/HomeScreen'
+import AppScreen from './components/AppScreen'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={storeWithPersistor.store}>
     <PersistGate loading={null} persistor={storeWithPersistor.persistor}>
-      <HomeScreen />
+      <AppScreen />
     </PersistGate>
   </Provider>
 );
