@@ -72,6 +72,11 @@
         border: 0 none;
       }
     }
+    &#baseball-mlb {
+      .events-list .event-details .event-footer .event-status-wrapper .event-status img.icon-live-score {
+        display: block;
+      }
+    }
   }
   .events-list-header {
     display: flex;
@@ -304,6 +309,9 @@
               width: auto;
               height: 13px;
               display: block;
+            }
+            img.icon-live-score {
+              display: none;
             }
             .remaining {
               display: flex;
