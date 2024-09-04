@@ -18,7 +18,7 @@ export default function Promotions() {
       <Carousel
         showArrows={false}
         showStatus={false}
-        showIndicators={false}
+        showIndicators={true}
         showThumbs={false}
         renderArrowPrev={() => {}}
         renderArrowNext={() => {}}
