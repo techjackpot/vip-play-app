@@ -41,6 +41,47 @@ body {
   }
 }
 
+.toplayer-container {
+  height: 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 12px 14px 4px;
+  .logo-container {
+    img {
+      display: block;
+      height: 48px;
+      width: auto;
+    }
+  }
+  .toplayer-controls {
+    display: flex;
+    .btn-wallet, .btn-login {
+      border-radius: 30px;
+      display: block;
+      line-height: 30px;
+      margin-left: 6px;
+      padding: 0 14px;
+      font-weight: 600px;
+      font-size: 13px;
+    }
+    .btn-wallet {
+      display: flex;
+      align-items: center;
+      background: $color-orange;
+      color: white;
+      img {
+        margin-right: 11px;
+      }
+    }
+    .btn-login {
+      background: white;
+      color: #17191C;
+    }
+  }
+}
+
 .betsscreen-container, .casinoscreen-container, .rewardsscreen-container {
   height: 100%;
   img {

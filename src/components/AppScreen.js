@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import '../assets/scss/AppScreen.scss';
 
+import TopLayer from './TopLayer';
 import BottomNav from './BottomNav';
 import KambiBC from './KambiBC';
 import HomeScreen from './HomeScreen';
@@ -15,6 +16,7 @@ export default function AppScreen() {
 
   return (
     <div className="appscreen-container dark">
+      <TopLayer />
       <div className="screen-container">
         {activeScreen === 'home' && <HomeScreen />}
         {activeScreen === 'live' && <LiveNowScreen />}
