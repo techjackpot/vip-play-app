@@ -33,6 +33,7 @@ export default function LiveNowScreen() {
       const items = response.data.group.groups;
 
       items.forEach(item => {
+        if (item.termKey == 'football') return;
         // item.groups.forEach(group => {
         //   leagues.push({
         //     path: '',
