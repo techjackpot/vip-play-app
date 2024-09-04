@@ -32,21 +32,21 @@ export default function TeamDetails({teamData, teamIcon = ''}) {
   };
 
   const handleSpreadClick = () => {
-    if (teamData.spreadData.suspended) {
+    if (teamData.spreadData?.suspended || teamData.spread?.suspended) {
       return;
     }
     // setSpreadActive(!isSpreadActive);
     handleWapiOutcomes(teamData.spread, !isSpreadActive);
   };
   const handleTotalClick = () => {
-    if (teamData.totalData.suspended) {
+    if (teamData.totalData?.suspended || teamData.total?.suspended) {
       return;
     }
     // setTotalActive(!isTotalActive);
     handleWapiOutcomes(teamData.total, !isTotalActive);
   };
   const handleMoneylineClick = () => {
-    if (teamData.moneylineData.suspended) {
+    if (teamData.moneylineData?.suspended || teamData.moneyline?.suspended) {
       return;
     }
     // setMoneylineActive(!isMoneylineActive);

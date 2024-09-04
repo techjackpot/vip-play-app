@@ -48,9 +48,9 @@ function EventContent({item}) {
 
     if (item.score && item.liveData) {
       homeData.score = isAway ? item.score.away : item.score.home;
-      homeData.setScores = isAway ? item.liveData?.statistics?.sets.away : item.liveData?.statistics?.sets.home;
+      homeData.setScores = isAway ? item.liveData?.statistics?.sets?.away : item.liveData?.statistics?.sets?.home;
       awayData.score = isAway ? item.score.home : item.score.away;
-      awayData.setScores = isAway ? item.liveData?.statistics?.sets.home : item.liveData?.statistics?.sets.away;
+      awayData.setScores = isAway ? item.liveData?.statistics?.sets?.home : item.liveData?.statistics?.sets?.away;
     }
 
     setHomeData(homeData);

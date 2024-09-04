@@ -131,6 +131,9 @@
       border-radius: 15px;
       overflow: hidden;
       background: #F7F8F9;
+      &.preview-loading {
+        min-height: 120px;
+      }
       .event-details-info {
         display: flex;
         padding: 8px 8px 0;

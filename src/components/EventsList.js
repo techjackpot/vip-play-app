@@ -6,8 +6,9 @@ import moment from 'moment';
 import FootballEventsList from './Sports/Football/EventsList';
 import TennisEventsList from './Sports/Tennis/EventsList';
 import GeneralEventsList from './Sports/General/EventsList';
+import GeneralEventsListGroups from './Sports/General/EventsListGroups';
 
-export default function EventsList({league}) {
+export default function EventsList({league, is_now_live}) {
   const [events, setEventsData] = useState([]);
   const [intervalID, setIntervalID] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -183,6 +184,10 @@ export default function EventsList({league}) {
   } else if (league.sport_code === 'tennis') {
     return <TennisEventsList league={league} events={events} isLoading={isLoading} />;
   } else {
-    return <GeneralEventsList league={league} events={events} isLoading={isLoading} />;
+    if (is_now_live) {
+      return <GeneralEventsListGroups league={league} events={events} isLoading={isLoading} />;
+    } else {
+      return <GeneralEventsList league={league} events={events} isLoading={isLoading} />;
+    }
   }
 };

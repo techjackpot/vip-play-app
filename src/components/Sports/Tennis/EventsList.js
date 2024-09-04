@@ -9,7 +9,7 @@ function EventsList({league, group, events, isLoading}) {
       <div className="events-list-header">
         <h1 className="heading">
           {league.icon && <img className="league-icon" src={league.icon} alt="" />}
-          {league.heading} / {group}
+          {league.heading ? `${league.heading} / ${group}` : `${league.name}`}
         </h1>
         <a className="btn-more-bets" href="/">More Bets &gt;</a>
       </div>
