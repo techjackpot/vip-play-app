@@ -47,11 +47,11 @@ body {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  padding: 12px 14px 4px;
+  padding: 0 15px 0px 20px;
   .logo-container {
     img {
       display: block;
-      height: 48px;
+      height: 45px;
       width: auto;
     }
   }
@@ -84,6 +84,7 @@ body {
 
 .betsscreen-container, .casinoscreen-container, .rewardsscreen-container {
   height: 100%;
+  overflow: auto;
   img {
     width: 100%;
     object-position: top;
