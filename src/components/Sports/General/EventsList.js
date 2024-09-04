@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import EventPreview from "./EventPreview";
 import EventDetails from "./EventDetails";
 
-export default function EventsList({league, events, isLoading}) {
+export default function EventsList({league, events, group, isLoading}) {
   return (
     <div className="events-list-wrapper" id={league.href}>
       <div className="events-list-header">
         <h1 className="heading">
           {league.icon && <img className="league-icon" src={league.icon} alt="" />}
-          {league.heading}
+          {league.heading && group ? `${league.heading} / ${group}` : `${events[0]?.event.path.map(p => p.name).join(' / ')}`}
         </h1>
         <a className="btn-more-bets" href="/">More Bets &gt;</a>
       </div>

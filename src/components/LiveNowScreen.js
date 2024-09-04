@@ -27,7 +27,6 @@ export default function LiveNowScreen() {
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(`https://eu-offering-api.kambicdn.com/offering/v2018/kambi/event/live/open.json?lang=en_GB&market=GB`);
-      console.log(response);
 
       const leagues = [];
 

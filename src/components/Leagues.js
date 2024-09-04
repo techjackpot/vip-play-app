@@ -62,7 +62,7 @@ export default function LeaguesComponent({children, leagues = null, is_live_now 
         href: 'tennis-wta',
       },
       {
-        path: 'listView/baseball/all/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
+        path: 'listView/basketball/nba/all/all/matches.json?lang=en_GB&market=GB&includeParticipants=false&useCombined=true&useCombinedLive=true',
         sport: 'BASKETBALL',
         sport_code: 'basketball',
         group: 'NBA',
