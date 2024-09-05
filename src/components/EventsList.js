@@ -22,6 +22,7 @@ export default function EventsList({league, is_now_live}) {
           ?.filter(item => !league.groupMatches || item.event.group === league.group)
           .filter(item => moment(item.event.start).diff(moment(), 'days') > -1)
           .filter(item => !item.event.englishName.includes('Baseball Team'))
+          .filter(item => !item.event.englishName.includes('National League') && !item.event.englishName.includes('American League'))
           .map(item => ({...item, score: item.liveData?.score}))
           || []
       );
