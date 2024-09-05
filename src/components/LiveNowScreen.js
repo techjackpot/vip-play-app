@@ -34,6 +34,7 @@ export default function LiveNowScreen() {
 
       items.forEach(item => {
         if (item.termKey == 'football') return;
+        if (item.termKey == 'z_sport') return;
         // item.groups.forEach(group => {
         //   leagues.push({
         //     path: '',
