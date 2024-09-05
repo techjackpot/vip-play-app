@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
+const lockIcon = 'https://res.cloudinary.com/production/image/upload/v1723596902/Icons/VIP/lock.svg';
+
 function EventDetailsCell({odd}) {
   const [isActive, setActive] = useState(false);
+
+  const handleBetClick = () => {
+    if (!odd.available || odd.suspended || !odd.odds) {
+      return;
+    }
+    setActive(!isActive);
+  };
+
   return (
-    <div onClick={() => setActive(!isActive)} className={`event-betinfo-cell ${!odd.available ? 'empty' : ''} ${isActive ? 'active' : ''}`}>
+    <div onClick={handleBetClick} className={`event-betinfo-cell ${!odd.available ? 'empty' : ''} ${isActive ? 'active' : ''} ${odd.suspended || !odd.odds ? 'suspended' : ''}`}>
       <span className="text">{odd.odds}</span>
+      {(odd.suspended || !odd.available || !odd.odds) && <img src={lockIcon} alt="" />}
     </div>
   )
 }
@@ -41,6 +52,7 @@ export default function EventDetails({item}) {
           return {
             ...preset,
             available: !!outcome,
+            suspended: outcome?.status == 'SUSPENDED',
             odds: outcome ? outcome.odds : '',
           };
         }),

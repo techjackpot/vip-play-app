@@ -26,14 +26,14 @@ export default function LiveNowScreen() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`https://eu-offering-api.kambicdn.com/offering/v2018/kambi/event/live/open.json?lang=en_GB&market=GB`);
+      const response = await axios.get(`https://eu-offering-api.kambicdn.com/offering/v2018/kambi/event/live/open.json?lang=en_US&market=GB`);
 
       const leagues = [];
 
       const items = response.data.group.groups;
 
       items.forEach(item => {
-        if (item.termKey == 'football') return;
+        // if (item.termKey == 'football') return;
         if (item.termKey == 'z_sport') return;
         // item.groups.forEach(group => {
         //   leagues.push({
@@ -54,7 +54,7 @@ export default function LiveNowScreen() {
         // });
         leagues.push({
           path: '',
-          fullPath: `https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/${item.termKey}/all/all/all/in-play.json?lang=en_GB&market=GB&useCombined=true&useCombinedLive=true`,
+          fullPath: `https://eu-offering-api.kambicdn.com/offering/v2018/kambi/listView/${item.termKey}/all/all/all/in-play.json?lang=en_US&market=GB&useCombined=true&useCombinedLive=true`,
           sport: item.sport,
           sport_code: item.termKey,
           group: '',
